@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jeza <jeza@student.42.fr>                  +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/03/04 18:23:30 by jeza             ###   ########.fr        #
+#    Updated: 2024/03/05 16:59:47 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC := gcc
 # Options de compilation
 CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
-#Liste des fichiers source.
+#Liste des fichiers source. pipex.c utils.c
 SRCS := pipex.c utils.c
 GETNEXTLINE := get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a
