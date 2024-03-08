@@ -6,13 +6,12 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/03/08 17:09:13 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/08 16:44:23 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Nom de l'executable
 NAME = pipex
-NAMEB = pipex_bonus
 
 # Compilateur
 CC := gcc
@@ -36,7 +35,7 @@ GETNEXTLINE_OBJ := $(GETNEXTLINE:.c=.o)
 
 # Regle par defaut pour l'executable
 all: author project $(NAME)
-bonus: author project $(NAMEB)
+bonus: author project
 
 # Regles pour afficher l'auteur et le projet.
 author:
@@ -66,7 +65,7 @@ clean:
 
 # Regle pour nettoyer les fichiers objets et l'executable.
 fclean: clean
-	$(RM) $(NAME) $(NAMEB)
+	$(RM) $(NAME)
 	make fclean -C Libft
 	make fclean -C printf
 
@@ -75,4 +74,4 @@ re: author fclean all
 
 # Declarer les regles comme des cibles .phony pour eviter des conflits avec
 # des fichiers du meme nom.
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

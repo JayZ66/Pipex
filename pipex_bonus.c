@@ -10,177 +10,67 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "pipex_bonus.h"
+#include "pipex.h"
 
-// While argv[after file] et argv[avant file2]
-// Tu pipe !
-
-char	**extract_path(char **env)
-{
-	int	i;
-	int	j;
-	char	*str;
-	char	**path;
-
-	i = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (env[i][j])
-		{
-			if (env[i][j] == '=')
-			{
-				str = ft_substr(env[i], 0, j); // Take the beginning of each str in env.
-				if (ft_strcmp(str, "PATH") == 0)
-				{
-					j++;
-					free(str);
-					path = ft_split(env[i] + j, ':');
-					return (path);
-				}
-			}
-			j++;
-		}
-		free(str);
-		i++;
-	}
-	perror("Impossible to get the path\n");
-	return (NULL);
-}
-
-// char	**extract_path(char **env)
-// {
-// 	int	i;
-// 	int	j;
-// 	char	*str;
-// 	char	**path;
-
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		j = 0;
-// 		while (env[i][j] && env[i][j] != '=')
-// 			j++;
-// 		str = ft_substr(env[i], 0, j); // Take the beginning of each str in env.
-// 		if (ft_strcmp(str, "PATH") == 0)
-// 		{
-// 			j++;
-// 			free(str);
-// 			path = ft_split(env[i] + j, ':');
-// 			return (path);
-// 		}
-// 		free(str);
-// 		i++;
-// 	}
-// 	perror("Impossible to get the path\n");
-// 	return (NULL);
-// }
-
-char	*select_path(char *cmd,char **env)
-{
-	char	*each_path;
-	char	*exec_path;
-	char	**path;
-	int		i;
-
-	i = 0;
-	path = extract_path(env);
-	if (!path)
-	 {
-		perror("Can't get the right env. variable\n");
-		exit(EXIT_FAILURE);
-	 }
-	while (path[i])
-	{
-		each_path = ft_strjoin(path[i], "/");
-		exec_path = ft_strjoin(each_path, cmd); // In order to add the cmd.
-		free(each_path);
-		if (access(exec_path, X_OK) == 0) // Check if the executable exists in the repo.
-			return(free_tab(path), exec_path);
-		free(exec_path);
-		i++;
-	}
-	free_tab(path);
-	perror("The executable doesn't exist in the repo\n");
-	return (NULL);
-}
-
-void	exec_cmd(char *cmd, char **env)
-{
-	char	*path;
-	char	**args;
-
-	args = ft_split(cmd, ' '); // To get the cmd without flags.
-	if (!args)
-	{
-		perror("Failed to split cmd\n");
-		exit(EXIT_FAILURE);
-	}
-	path = select_path(args[0], env);
-	if (!path)
-	{
-		free_tab(args);
-		perror("Didn't get the path\n");
-		exit(EXIT_FAILURE);
-	}
-	if (execve(path, args, env) == -1)
-	{
-		perror("Cmd not executed\n");
-		free_tab(args);
-		free(path);
-		exit(EXIT_FAILURE);
-	}
-}
-
-void	child_process(int *pfd, char **argv, char **env)
-{
-	int	fd;
-
-	close (pfd[0]);
-	fd = open(argv[1], O_RDONLY, 0777); // To check
-	if (fd == -1)
-		return(perror("Problem with opening the file\n"));
-	dup2(fd, STDIN_FILENO);
-	dup2(pfd[1], STDOUT_FILENO);
-	close(pfd[1]);
-	exec_cmd(argv[2], env); // Param. : cmd (argv[2])
-	close(fd);
-}
-
-void	parent_process(int *pfd, char **argv, char **env)
-{
-	int	fd;
-
-	close (pfd[1]);
-	fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		perror("Problem with opening/creating file2\n");
-		exit(EXIT_FAILURE);
-	}
-	dup2(fd, STDOUT_FILENO);
-	dup2(pfd[0], STDIN_FILENO);
-	close(pfd[0]);
-	exec_cmd(argv[3], env); // Param.: cmd (argv[3])
-	close(fd);
-	wait(NULL);
-}
 
 int	main(int argc, char **argv, char **env)
 {
-	int	fd[2];
-	int	pid;
+	int	cmd_args;
+	int	last_file;
+	int	first_file;
 
-	if (argc != 5)
-		return (perror("Problems of args\n"), 1);
-	if (pipe(fd) == -1)
-		return (perror("Problem with the pipe"), 1);
-	pid = fork();
-	if (pid == -1)
-		return (perror("Problem with the fork"), 1);
-	if (pid == 0)
-		child_process(fd, argv, env); // Params. : fd; argv; env
+	first_file = 0;
+	last_file = 0;
+	cmd_args = 0;
+	if (argc < 5)
+		return (perror("Not enough args.\n"), 1);
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		if (argc < 6)
+			return (perror("Wrong nb of args\n"), 1);
+		last_file = open(argv[argc], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (last_file == -1)
+			return (perror("Can't open last file\n"), 1);
+		cmd_args = 3; // For not taking into account here_doc, limiter & file2
+		// handle_here_doc(argv);
+	}
 	else
-		parent_process(fd, argv, env);
-	return(0);
+	{
+		first_file = open(argv[1], O_RDONLY, 0644);
+		if (first_file == -1)
+			return(perror("Can't open first file\n"), 1);
+		cmd_args = 2; // For not taking into account file1 & file2
+		dup2(first_file, STDIN_FILENO); // What we're taking to run cmd.  Cela signifie que le contenu du premier fichier sera utilisé comme entrée pour les commandes.
+		close(first_file);
+	}
+	while (cmd_args < argc - 1) // To check.
+	{
+		create_pipes(argv[cmd_args], env);
+		cmd_args++;
+	}
+	dup2(last_file, STDOUT_FILENO); //Cela signifie que la sortie des commandes sera écrite dans le dernier fichier.
+	exec_command(argv[argc - 2], env); // To execute the last cmd. as the output is the file.
+	close(last_file);
 }
+
+/*
+Dans ce contexte, argc - 2 est utilisé pour s'assurer qu'on itère sur 
+tous les arguments après la redirection de fichier. 
+Si cmd_args est initialisé à 2, cela signifie que les deux premiers 
+arguments ont déjà été pris en compte, donc on itère à partir de 
+cmd_args + 1, c'est-à-dire le troisième argument. De même, si cmd_args est 
+initialisé à 3, on commence à itérer à partir du quatrième argument.
+*/
+
+/*
+Pourquoi ouvrir et rediriger les deux fichiers maintenant et pas plus tard ?
+
+- Ouvrir et rediriger le premier fichier avant la boucle garantit que 
+la première commande a accès au contenu de ce fichier dès le début 
+de son exécution.
+- Ouvrir et rediriger le dernier fichier à l'extérieur de la boucle 
+après la création de tous les pipes garantit que la dernière 
+commande peut écrire son résultat dans ce fichier après avoir 
+exécuté toutes les commandes intermédiaires et qu'elle dispose 
+d'un accès approprié au fichier de sortie.
+*/

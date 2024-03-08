@@ -1,0 +1,33 @@
+
+STEPS - BONUS : 
+1. Checker si les args. sont inf. à 5.
+2. On compare notre 2ème arg. avec "here_doc", si c'est bon : 
+- On check s'il y a moins de 6 args. 
+- On ouvre le dernier file
+- On met une var. à 3 (pour retirer here_doc, limiter et file2)
+- On envoie vers la fonction here_doc
+3. Sinon,
+- On ouvre le premier file et le dernier file
+- On dup le premier file.
+- On met une variable à 2 pour retirer les 2 files dans le calcul.
+4. Boucle tant qu'on a pas passer toutes les commandes.
+- On envoie pour créer les pipes nécessaires.
+5. On redirige le file de sortie avec dup.
+6. On envoie vers l'exécution de commande tout en retirant les 2 files.
+
+Créer les pipes & children : 
+1. On crée le pipe
+2. on crée la fork
+3. On regarde si on est dans un child : 
+- On écrit donc redirige vers la sortie STDOUT
+- On envoie vers l'exec. de commande.
+4. On check si on est dans un parent : 
+- On lit donc redirige vers STDIN
+- On envoie vers l'exec. de commande.
+
+Here_doc : 
+On refait un processus enfant et des pipes.
+Si on est dans le processus parent on fait de la redirecton et on wait.
+Juste si on est dans le processus enfant, on envoie vers une fonction qui va lire sur le terminal.
+	Fonction => On fait une boucle pour lire où on va comparer ce qu'on a lu à av[2] (limiter)
+	On utilise ft_putstrfd.

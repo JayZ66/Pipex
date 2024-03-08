@@ -24,11 +24,21 @@
 # include <sys/wait.h> // Wait
 # include <fcntl.h>
 
-void	free_tab(char **tab);
+// MANDATORY PART
 char	**extract_path(char **env);
 char	*select_path(char *cmd, char **env);
 void	exec_cmd(char *cmd, char **env);
 void	child_process(int *pfd, char **argv, char **env);
 void	parent_process(int *pfd, char **argv, char **env);
+void	free_tab(char **tab);
+
+// BONUS PART
+char	**take_path(char **env);
+char	*get_path(char *cmd,char **env);
+void	exec_command(char *cmd, char **env);
+void	child_process_b(int *pfd, char *cmd, char **env);
+void	parent_process_b(int *pfd, char *cmd, char **env);
+void	create_pipes(char *cmd, char **env);
+void	free_tab_bonus(char **tab);
 
 #endif
