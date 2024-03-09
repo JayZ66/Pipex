@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 
 int	main(int argc, char **argv, char **env)
@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (argc < 6)
 			return (perror("Wrong nb of args\n"), 1);
-		last_file = open(argv[argc], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		last_file = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (last_file == -1)
 			return (perror("Can't open last file\n"), 1);
 		cmd_args = 3; // For not taking into account here_doc, limiter & file2
@@ -39,11 +39,14 @@ int	main(int argc, char **argv, char **env)
 		first_file = open(argv[1], O_RDONLY, 0644);
 		if (first_file == -1)
 			return(perror("Can't open first file\n"), 1);
+		last_file = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (last_file == -1)
+			return (perror("Can't open last_file\n"), 1);
 		cmd_args = 2; // For not taking into account file1 & file2
 		dup2(first_file, STDIN_FILENO); // What we're taking to run cmd.  Cela signifie que le contenu du premier fichier sera utilisé comme entrée pour les commandes.
 		close(first_file);
 	}
-	while (cmd_args < argc - 1) // To check.
+	while (cmd_args < argc - 2) // To check.
 	{
 		create_pipes(argv[cmd_args], env);
 		cmd_args++;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_cmd_bonus.c                                 :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 14:30:02 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/08 14:30:02 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/06 16:02:19 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/06 16:02:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
-void	exec_command(char *cmd, char **env)
+void	exec_cmd(char *cmd, char **env)
 {
 	char	*path;
 	char	**args;
@@ -23,7 +23,7 @@ void	exec_command(char *cmd, char **env)
 		perror("Failed to split cmd\n");
 		exit(EXIT_FAILURE);
 	}
-	path = get_path(args[0], env);
+	path = select_path(args[0], env);
 	if (!path)
 	{
 		free_tab(args);
@@ -37,30 +37,4 @@ void	exec_command(char *cmd, char **env)
 		free(path);
 		exit(EXIT_FAILURE);
 	}
-}
-
-// This function will create as many pipes as necessary,
-// depending on the nb of commands.
-// The child p. executes the cmd & the parent p. 
-// sets up data collection for the next step.
-void	create_pipes(char *cmd, char **env)
-{
-	int	pid;
-	int	fd[2];
-
-	if (pipe(fd) == -1)
-	{
-		perror("Pipe creation failed\n");
-		exit(EXIT_FAILURE);
-	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("Process creation failed\n");
-		exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-		child_process_b(fd, cmd, env);
-	else
-		parent_process_b(fd, cmd, env);
 }
