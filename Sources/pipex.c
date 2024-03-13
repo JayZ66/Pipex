@@ -12,13 +12,6 @@
 
 #include "../pipex.h"
 
-/*
-Steps : 
-1. On crée un pipe et un process child. avec les vérifs.
-2. On crée une fonction qui exécute les commandes.
-3. On crée une fonction qui va chercher le path, le vérifier et l'envoyer.
-*/
-
 int	main(int argc, char **argv, char **env)
 {
 	int	fd[2];
@@ -32,7 +25,7 @@ int	main(int argc, char **argv, char **env)
 	if (pid == -1)
 		return (perror("Problem with the fork"), 1);
 	if (pid == 0)
-		child_process(fd, argv, env); // Params. : fd; argv; env
+		child_process(fd, argv, env);
 	else
 		parent_process(fd, argv, env);
 	return (0);

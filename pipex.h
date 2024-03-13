@@ -34,7 +34,7 @@ void	free_tab(char **tab);
 
 // BONUS PART
 char	**take_path(char **env);
-char	*get_path(char *cmd,char **env);
+char	*get_path(char *cmd, char **env);
 void	exec_command(char *cmd, char **env);
 void	child_process_b(int *pfd, char *cmd, char **env);
 void	parent_process_b(int *pfd, char *cmd, char **env);
@@ -43,8 +43,8 @@ void	free_tab_bonus(char **tab);
 void	child_here_doc(int *pfd, char **argv);
 void	parent_here_doc(int *pfd, char **argv);
 void	here_doc(char **argv);
-int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 void	check_args(int argc, int flag);
 int		open_file(int argc, char **argv, int flag);
+int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 
 #endif

@@ -17,7 +17,7 @@ void	exec_cmd(char *cmd, char **env)
 	char	*path;
 	char	**args;
 
-	args = ft_split(cmd, ' '); // To get the cmd without flags.
+	args = ft_split(cmd, ' ');
 	if (!args)
 	{
 		perror("Failed to split cmd\n");

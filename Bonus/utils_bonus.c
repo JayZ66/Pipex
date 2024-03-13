@@ -32,36 +32,23 @@ int	open_file(int argc, char **argv, int flag)
 	int	first_file;
 	int	last_file;
 
+	first_file = 0;
+	last_file = 0;
 	if (flag == 1)
-	{
 		last_file = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (last_file == -1)
-		{
-			perror("Can't open last file\n");
-			exit(EXIT_FAILURE);
-		}
-		return (last_file);
-	}
 	else if (flag == 2)
-	{
 		last_file = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (last_file == -1)
-		{
-			perror("Can't open last file\n");
-			exit(EXIT_FAILURE);
-		}
-		return (last_file);
-	}
 	else if (flag == 0)
-	{
 		first_file = open(argv[1], O_RDONLY, 0644);
-		if (first_file == -1)
-		{
-			perror("Can't open first file\n");
-			exit(EXIT_FAILURE);
-		}
-		return (first_file);
+	if (last_file == -1 || first_file == -1)
+	{
+		perror("Can't open file\n");
+		exit(EXIT_FAILURE);
 	}
+	else if (first_file)
+		return (first_file);
+	else if (last_file)
+		return (last_file);
 	return (perror("Can't open file\n"), 1);
 }
 

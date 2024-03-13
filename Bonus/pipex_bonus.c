@@ -23,42 +23,20 @@ int	main(int argc, char **argv, char **env)
 	{
 		check_args(argc, 1);
 		last_file = open_file(argc, argv, 2);
-		cmd_args = 3; // For not taking into account here_doc, limiter & file2
+		cmd_args = 3;
 		here_doc(argv);
 	}
 	else
 	{
 		first_file = open_file(argc, argv, 0);
 		last_file = open_file(argc, argv, 1);
-		cmd_args = 2; // For not taking into account file1 & file2
-		dup2(first_file, STDIN_FILENO); // What we're taking to run cmd.  Cela signifie que le contenu du premier fichier sera utilisé comme entrée pour les commandes.
+		cmd_args = 2;
+		dup2(first_file, STDIN_FILENO);
 		close(first_file);
 	}
-	while (cmd_args < argc - 2) // To check.
+	while (cmd_args < argc - 2)
 		create_pipes(argv[cmd_args++], env);
-	dup2(last_file, STDOUT_FILENO); //Cela signifie que la sortie des commandes sera écrite dans le dernier fichier.
-	exec_command(argv[argc - 2], env); // To execute the last cmd. as the output is the file.
+	dup2(last_file, STDOUT_FILENO);
+	exec_command(argv[argc - 2], env);
 	close(last_file);
 }
-
-/*
-Dans ce contexte, argc - 2 est utilisé pour s'assurer qu'on itère sur 
-tous les arguments après la redirection de fichier. 
-Si cmd_args est initialisé à 2, cela signifie que les deux premiers 
-arguments ont déjà été pris en compte, donc on itère à partir de 
-cmd_args + 1, c'est-à-dire le troisième argument. De même, si cmd_args est 
-initialisé à 3, on commence à itérer à partir du quatrième argument.
-*/
-
-/*
-Pourquoi ouvrir et rediriger les deux fichiers maintenant et pas plus tard ?
-
-- Ouvrir et rediriger le premier fichier avant la boucle garantit que 
-la première commande a accès au contenu de ce fichier dès le début 
-de son exécution.
-- Ouvrir et rediriger le dernier fichier à l'extérieur de la boucle 
-après la création de tous les pipes garantit que la dernière 
-commande peut écrire son résultat dans ce fichier après avoir 
-exécuté toutes les commandes intermédiaires et qu'elle dispose 
-d'un accès approprié au fichier de sortie.
-*/

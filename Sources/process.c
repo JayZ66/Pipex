@@ -17,13 +17,13 @@ void	child_process(int *pfd, char **argv, char **env)
 	int	fd;
 
 	close (pfd[0]);
-	fd = open(argv[1], O_RDONLY, 0777); // To check
+	fd = open(argv[1], O_RDONLY, 0777);
 	if (fd == -1)
 		return (perror("Problem while opening the file\n"));
 	dup2(fd, STDIN_FILENO);
 	dup2(pfd[1], STDOUT_FILENO);
 	close(pfd[1]);
-	exec_cmd(argv[2], env); // Param. : cmd (argv[2])
+	exec_cmd(argv[2], env);
 	close(fd);
 }
 
@@ -41,7 +41,7 @@ void	parent_process(int *pfd, char **argv, char **env)
 	dup2(fd, STDOUT_FILENO);
 	dup2(pfd[0], STDIN_FILENO);
 	close(pfd[0]);
-	exec_cmd(argv[3], env); // Param.: cmd (argv[3])
+	exec_cmd(argv[3], env);
 	close(fd);
 	wait(NULL);
 }

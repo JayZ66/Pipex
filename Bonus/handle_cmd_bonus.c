@@ -17,7 +17,7 @@ void	exec_command(char *cmd, char **env)
 	char	*path;
 	char	**args;
 
-	args = ft_split(cmd, ' '); // To get the cmd without flags/options.
+	args = ft_split(cmd, ' ');
 	if (!args)
 	{
 		perror("Failed to split cmd\n");
@@ -39,10 +39,6 @@ void	exec_command(char *cmd, char **env)
 	}
 }
 
-// This function will create as many pipes as necessary,
-// depending on the nb of commands.
-// The child p. executes the cmd & the parent p. 
-// sets up data collection for the next step.
 void	create_pipes(char *cmd, char **env)
 {
 	int	pid;
