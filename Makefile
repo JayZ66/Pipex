@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/03/09 20:54:12 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/13 13:31:44 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,11 @@ CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
 #Liste des fichiers source.
 SRCS = Sources/pipex.c Sources/utils.c Sources/handle_path.c \
-		Sources/process.c Sources/exec.c
+		Sources/process.c Sources/exec_cmd.c
 
 BONUS = Bonus/pipex_bonus.c Bonus/handle_cmd_bonus.c Sources/utils.c \
-		Bonus/handle_path_bonus.c Bonus/process_bonus.c 
+		Bonus/handle_path_bonus.c Bonus/process_bonus.c \
+		Bonus/handle_here_doc.c Bonus/utils_bonus.c
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a
 PRINTF = printf/libftprintf.a

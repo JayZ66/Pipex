@@ -1,0 +1,45 @@
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "crat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus "cat" file "cat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "crat" "wc -l" file2
+
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "wc -l" file2
+< file cat | cat | wc -l > file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "grep e" "wc -l" file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "grep e" "wc -l" "cat" "wc -w" file2
+< file cat | cat | grep e | wc -l | cat | wc -w > file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "wc -l" file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "grep e" "cat" file2
+
+
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" file2
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex_bonus file "cat" "cat" "wc -l"
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex "cat" file "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex filet "cat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "crat" "wc -l"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat" "wc -l" file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat" "wc -l" "grep"
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex filet "cat" "wc -l" file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "crat" "wc -l" file2
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex "cat" file "wc -l" file2
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat" "wc -l" file2
+< file cat | wc -l > file2
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "cat" "grep a" file2
+< file cat | grep a > file2
+
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./pipex file "grep e" "wc -l" file2
+< file grep e | wc -l > file2
+
+
+

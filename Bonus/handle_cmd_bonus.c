@@ -27,7 +27,7 @@ void	exec_command(char *cmd, char **env)
 	if (!path)
 	{
 		free_tab(args);
-		perror("Didn't get the path\n");
+		perror("Can't get the path\n");
 		exit(EXIT_FAILURE);
 	}
 	if (execve(path, args, env) == -1)

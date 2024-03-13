@@ -35,5 +35,5 @@ int	main(int argc, char **argv, char **env)
 		child_process(fd, argv, env); // Params. : fd; argv; env
 	else
 		parent_process(fd, argv, env);
-	return(0);
+	return (0);
 }

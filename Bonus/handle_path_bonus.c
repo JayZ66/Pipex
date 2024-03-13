@@ -14,16 +14,16 @@
 
 char	**take_path(char **env)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*str;
 	char	**path;
 
-	i = 0;
-	while (env[i])
+	i = -1;
+	while (env[++i])
 	{
-		j = 0;
-		while (env[i][j])
+		j = -1;
+		while (env[i][++j])
 		{
 			if (env[i][j] == '=')
 			{
@@ -31,21 +31,46 @@ char	**take_path(char **env)
 				if (ft_strcmp(str, "PATH") == 0)
 				{
 					j++;
-					free(str);
 					path = ft_split(env[i] + j, ':');
-					return (path);
+					return (free(str), path);
 				}
+				free(str); // ligne en plus
 			}
-			j++;
 		}
-		free(str);
-		i++;
 	}
-	perror("Impossible to get the path\n");
-	return (NULL);
+	return (perror("Impossible to get the path\n"), NULL);
 }
 
-char	*get_path(char *cmd,char **env)
+// char	**take_path(char **env)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*str;
+// 	char	**path;
+
+// 	i = 0;
+// 	str = NULL;
+// 	while (env[i])
+// 	{
+// 		j = 0;
+// 		while (env[i][j] && env[i][j] != '=')
+// 			j++;
+// 		free(str);
+// 		str = ft_substr(env[i], 0, j);
+// 		if (ft_strcmp(str, "PATH") == 0)
+// 		{
+// 			j++;
+// 			path = ft_split(env[i] + j, ':');
+// 			return (free(str), path);
+// 		}
+// 		free (str);
+// 		str = NULL;
+// 		i++;
+// 	}
+// 	return (perror("Can't get the path\n"), NULL);
+// }
+
+char	*get_path(char *cmd, char **env)
 {
 	char	*each_path;
 	char	*exec_path;
@@ -55,17 +80,17 @@ char	*get_path(char *cmd,char **env)
 	i = 0;
 	path = take_path(env);
 	if (!path)
-	 {
+	{
 		perror("Can't get the right env. variable\n");
 		exit(EXIT_FAILURE);
-	 }
+	}
 	while (path[i])
 	{
 		each_path = ft_strjoin(path[i], "/");
 		exec_path = ft_strjoin(each_path, cmd); // In order to add the cmd.
 		free(each_path);
 		if (access(exec_path, X_OK) == 0) // Check if the executable exists in the repo.
-			return(free_tab(path), exec_path);
+			return (free_tab(path), exec_path);
 		free(exec_path);
 		i++;
 	}

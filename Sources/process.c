@@ -19,7 +19,7 @@ void	child_process(int *pfd, char **argv, char **env)
 	close (pfd[0]);
 	fd = open(argv[1], O_RDONLY, 0777); // To check
 	if (fd == -1)
-		return(perror("Problem with opening the file\n"));
+		return (perror("Problem while opening the file\n"));
 	dup2(fd, STDIN_FILENO);
 	dup2(pfd[1], STDOUT_FILENO);
 	close(pfd[1]);
@@ -35,7 +35,7 @@ void	parent_process(int *pfd, char **argv, char **env)
 	fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror("Problem with opening/creating file2\n");
+		perror("Problem while opening/creating file2\n");
 		exit(EXIT_FAILURE);
 	}
 	dup2(fd, STDOUT_FILENO);
